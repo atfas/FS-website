@@ -7,6 +7,9 @@ interface Props {
 }
 
 const { title, description } = Astro.props;
+
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
+const shareImageUrl = new URL('/og-image.png', Astro.site);
 ---
 
 <!doctype html>
@@ -23,7 +26,25 @@ const { title, description } = Astro.props;
     <script is:inline>
       if ('IntersectionObserver' in window) document.documentElement.classList.add('reveal-ready');
     </script>
-    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- Icons (generated from brand/logo-fs.png with `npm run icons`) -->
+    <link rel="icon" type="image/png" sizes="64x64" href="/favicon.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!-- Card shown when the link is shared on WhatsApp, Facebook, LinkedIn, etc. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pt_PT" />
+    <meta property="og:site_name" content="Fernandes & Saraiva" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={shareImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Logótipo F&S - Fernandes & Saraiva, Sociedade de Advogados" />
+    <meta name="twitter:card" content="summary_large_image" />
 
     <!-- Inter is the fallback font for devices without Apple's system font -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />

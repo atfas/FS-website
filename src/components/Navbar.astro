@@ -1,10 +1,15 @@
 ---
+import { Image } from 'astro:assets';
+import logoIcon from '../assets/images/logo-icon.png';
 import { navLinks, contact } from '../data/content';
 ---
 
 <header class="navbar">
   <nav class="nav-container" aria-label="Navegação principal">
-    <a href="#top" class="logo">Fernandes <span class="logo-amp">&</span> Saraiva</a>
+    <a href="#top" class="logo">
+      <Image src={logoIcon} alt="" width={36} height={36} class="logo-icon" loading="eager" />
+      <span>Fernandes & Saraiva</span>
+    </a>
 
     <ul class="nav-menu" id="nav-menu">
       {navLinks.map((link) => (
@@ -51,6 +56,9 @@ import { navLinks, contact } from '../data/content';
   }
 
   .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
     font-size: 1.3rem;
     font-weight: 700;
     letter-spacing: -0.01em;
@@ -58,10 +66,13 @@ import { navLinks, contact } from '../data/content';
     text-decoration: none;
     white-space: nowrap;
     padding: 0.6rem 0;
+    flex-shrink: 0;
   }
 
-  .logo-amp {
-    color: var(--gold);
+  .logo-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
   }
 
   .nav-menu {
@@ -124,6 +135,35 @@ import { navLinks, contact } from '../data/content';
     font-weight: 600;
     color: var(--text);
     cursor: pointer;
+  }
+
+  @media (max-width: 400px) {
+    .nav-container {
+      gap: 1rem;
+      padding: 0 1rem;
+    }
+
+    .logo {
+      font-size: 1.1rem;
+      gap: 0.5rem;
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  /* Very small phones: show only the F&S icon (the hero below shows the full name) */
+  @media (max-width: 359px) {
+    .logo span {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+    }
   }
 
   @media (max-width: 860px) {

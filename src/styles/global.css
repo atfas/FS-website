@@ -16,9 +16,6 @@
     --accent-soft: #e8edf4;  /* pale tint for icon circles */
     --link: var(--accent);
 
-    /* Gold is kept only as a small brand detail (the "&" in the logo) */
-    --gold: #8a6d12;
-
     --radius: 22px;
     --radius-small: 14px;
     --shadow: 0 4px 24px rgba(0, 0, 0, 0.06);

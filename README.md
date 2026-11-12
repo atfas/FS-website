@@ -27,9 +27,16 @@ Features:
 
 ```
 .
-├── astro.config.mjs        # Astro configuration
-├── public/
-│   └── favicon.png         # Served as-is
+├── astro.config.mjs        # Astro configuration (site URL)
+├── brand/
+│   └── logo-fs.png         # Original F&S artwork: the source for every icon
+├── scripts/
+│   └── generate-icons.mjs  # Builds the icons and share image from brand/logo-fs.png
+├── public/                 # Served as-is
+│   ├── favicon.png         # Browser tab icon
+│   ├── apple-touch-icon.png # iPhone home screen icon
+│   ├── icon-512.png        # Large icon (Google Business Profile, Android)
+│   └── og-image.png        # Card shown when the link is shared on WhatsApp/Facebook
 └── src/
     ├── pages/
     │   └── index.astro     # Home page: puts the sections together
@@ -66,3 +73,4 @@ npm install
 | `npm run build` | Builds the static site into `dist/` |
 | `npm run preview` | Serves the built `dist/` locally to check it before deploying |
 | `npm run check` | Type-checks the `.astro` and `.ts` files |
+| `npm run icons` | Regenerates the icons and share image from `brand/logo-fs.png` |
