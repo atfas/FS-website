@@ -187,6 +187,7 @@ a {
 .card {
     background: var(--bg);
     border-radius: var(--radius);
+    border: 1px solid rgba(0, 0, 0, 0.06); /* keeps white cards visible on white sections */
     box-shadow: var(--shadow);
 }
 

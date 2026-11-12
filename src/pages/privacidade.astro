@@ -1,0 +1,115 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import { contact } from '../data/content';
+
+const lastUpdated = 'novembro de 2026';
+---
+
+<BaseLayout
+  title="Política de Privacidade - Fernandes & Saraiva"
+  description="Como a Fernandes & Saraiva, Sociedade de Advogados R.L., trata os dados pessoais enviados através deste site."
+>
+  <Navbar />
+  <main id="main" class="section">
+    <article class="container legal">
+      <h1>Política de Privacidade</h1>
+      <p class="updated">Última atualização: {lastUpdated}</p>
+
+      <h2>Quem é responsável pelos seus dados</h2>
+      <p>
+        Fernandes & Saraiva, Sociedade de Advogados R.L., com escritório na {contact.addressLines.join(', ')}.<br />
+        Email: <a href={`mailto:${contact.email}`}>{contact.email}</a> · Telefone:
+        <a href={contact.phoneHref}>{contact.phone}</a>
+      </p>
+
+      <h2>Que dados recolhemos</h2>
+      <p>
+        Apenas os dados que nos envia através do formulário de contacto ou da marcação de consulta: nome, email,
+        telefone (se o indicar), o assunto e o conteúdo da sua mensagem, e o dia e a hora da consulta escolhidos.
+      </p>
+
+      <h2>Para que os usamos</h2>
+      <p>
+        Para responder à sua mensagem, marcar e gerir a consulta que pediu e entrar em contacto consigo a esse respeito.
+        Não usamos os seus dados para publicidade nem os vendemos a terceiros.
+      </p>
+
+      <h2>Com que fundamento</h2>
+      <p>
+        O seu consentimento, dado ao enviar o formulário, e as diligências pré-contratuais que nos pede, nos termos do
+        artigo 6.º, n.º 1, alíneas a) e b), do Regulamento Geral sobre a Proteção de Dados (RGPD).
+      </p>
+
+      <h2>Serviços que nos ajudam</h2>
+      <ul>
+        <li><strong>Web3Forms</strong>: entrega as mensagens do formulário no nosso email.</li>
+        <li><strong>Cal.com</strong>: gere as marcações de consultas feitas no calendário.</li>
+        <li><strong>Google Maps</strong>: mostra o mapa com a localização do escritório.</li>
+      </ul>
+      <p>Estes serviços tratam os dados apenas para prestar o respetivo serviço.</p>
+
+      <h2>Durante quanto tempo os guardamos</h2>
+      <p>
+        Durante o tempo necessário para responder ao seu pedido e, se vier a ser nosso cliente, pelo período exigido
+        pelas obrigações legais e deontológicas da profissão.
+      </p>
+
+      <h2>Os seus direitos</h2>
+      <p>
+        Pode, a qualquer momento, pedir o acesso, a retificação ou o apagamento dos seus dados, opor-se ao seu
+        tratamento, pedir a sua portabilidade ou retirar o consentimento, escrevendo para
+        <a href={`mailto:${contact.email}`}>{contact.email}</a>. Tem também o direito de apresentar queixa à Comissão
+        Nacional de Proteção de Dados (<a href="https://www.cnpd.pt" target="_blank" rel="noopener">www.cnpd.pt</a>).
+      </p>
+
+      <p class="back"><a href="/" class="link-arrow">Voltar ao início</a></p>
+    </article>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .legal {
+    max-width: 760px;
+  }
+
+  h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 5vw, 3rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+
+  .updated {
+    margin-top: 0.75rem;
+    color: var(--text-secondary);
+  }
+
+  h2 {
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  p,
+  li {
+    color: var(--text-secondary);
+  }
+
+  ul {
+    margin: 0.5rem 0 1rem 1.25rem;
+  }
+
+  li + li {
+    margin-top: 0.5rem;
+  }
+
+  .back {
+    margin-top: 3rem;
+  }
+</style>

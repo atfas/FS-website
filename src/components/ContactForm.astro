@@ -1,0 +1,348 @@
+---
+import { PUBLIC_WEB3FORMS_KEY } from 'astro:env/client';
+import { contact, services } from '../data/content';
+
+const isConfigured = Boolean(PUBLIC_WEB3FORMS_KEY);
+const showForm = isConfigured || import.meta.env.DEV;
+---
+
+{
+  showForm ? (
+        <div class="form-card card">
+          <h3 class="form-title">Enviar mensagem</h3>
+          <p class="form-intro">Escreva-nos e respondemos com a maior brevidade possível.</p>
+          {!isConfigured && (
+            <p class="dev-warning" role="note">
+              Modo de desenvolvimento: falta <code>PUBLIC_WEB3FORMS_KEY</code> no ficheiro <code>.env</code>, por isso as
+              mensagens não são enviadas. Este aviso não aparece no site publicado.
+            </p>
+          )}
+
+          <form
+            id="contact-form"
+            class="contact-form"
+            action="https://api.web3forms.com/submit"
+            method="POST"
+            novalidate
+            data-configured={String(isConfigured)}
+          >
+            <input type="hidden" name="access_key" value={PUBLIC_WEB3FORMS_KEY ?? ''} />
+            <input type="hidden" name="subject" value="Nova mensagem do site Fernandes & Saraiva" />
+            <input type="hidden" name="from_name" value="Site Fernandes & Saraiva" />
+            {/* Spam trap: people never see or fill this, bots do */}
+            <input type="checkbox" name="botcheck" class="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+            <div class="form-row">
+              <div class="field">
+                <label for="cf-name">Nome</label>
+                <input id="cf-name" name="name" type="text" autocomplete="name" required aria-describedby="cf-name-error" />
+                <p class="field-error" id="cf-name-error" data-message="Escreva o seu nome." />
+              </div>
+
+              <div class="field">
+                <label for="cf-email">Email</label>
+                <input id="cf-email" name="email" type="email" autocomplete="email" inputmode="email" required aria-describedby="cf-email-error" />
+                <p class="field-error" id="cf-email-error" data-message="Escreva um email válido, por exemplo nome@gmail.com." />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="field">
+                <label for="cf-phone">Telefone <span class="optional">(opcional)</span></label>
+                <input id="cf-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" />
+              </div>
+
+              <div class="field">
+                <label for="cf-area">Assunto <span class="optional">(opcional)</span></label>
+                <select id="cf-area" name="area">
+                  <option value="">Escolha uma área</option>
+                  {services.map((service) => <option value={service.title}>{service.title}</option>)}
+                  <option value="Outro">Outro assunto</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="cf-message">Mensagem</label>
+              <textarea id="cf-message" name="message" rows="6" required aria-describedby="cf-message-error"></textarea>
+              <p class="field-error" id="cf-message-error" data-message="Escreva a sua mensagem." />
+            </div>
+
+            <div class="field field-consent">
+              <label class="consent">
+                <input id="cf-consent" name="consent" type="checkbox" value="Sim" required aria-describedby="cf-consent-error" />
+                <span>
+                  Aceito que os meus dados sejam usados para responder a esta mensagem, de acordo com a
+                  <a href="/privacidade">política de privacidade</a>.
+                </span>
+              </label>
+              <p class="field-error" id="cf-consent-error" data-message="Para enviar, aceite a política de privacidade." />
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="button">Enviar mensagem</button>
+            </div>
+
+            <div class="form-status" role="status" aria-live="polite"></div>
+          </form>
+        </div>
+      ) : (
+        <div class="form-card card fallback">
+          <p>
+            Envie-nos um email para <a href={`mailto:${contact.email}`}>{contact.email}</a> ou ligue para{' '}
+            <a href={contact.phoneHref}>{contact.phone}</a>.
+          </p>
+        </div>
+      )
+}
+
+<style>
+  .form-card {
+    padding: 2.5rem;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+  }
+
+  .form-title {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .form-intro {
+    margin: 0.35rem 0 2rem;
+    color: var(--text-secondary);
+  }
+
+  .dev-warning {
+    margin-bottom: 1.5rem;
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius-small);
+    background: #fff8e1;
+    color: #5c4300;
+    font-size: 1rem;
+  }
+
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  label {
+    font-weight: 600;
+  }
+
+  .optional {
+    font-weight: 400;
+    color: var(--text-secondary);
+  }
+
+  input[type='text'],
+  input[type='email'],
+  input[type='tel'],
+  select,
+  textarea {
+    width: 100%;
+    min-height: 56px;
+    padding: 0.75rem 1rem;
+    border: 1px solid #b8b8bd;
+    border-radius: var(--radius-small);
+    background: #fff;
+    font: inherit;
+    font-size: 1.15rem;
+    color: var(--text);
+  }
+
+  textarea {
+    resize: vertical;
+    line-height: 1.5;
+  }
+
+  input:focus,
+  select:focus,
+  textarea:focus {
+    outline: 3px solid var(--accent);
+    outline-offset: 1px;
+    border-color: var(--accent);
+  }
+
+  [aria-invalid='true'] {
+    border-color: #b3261e;
+    border-width: 2px;
+  }
+
+  .field-error {
+    display: none;
+    color: #b3261e;
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  .field-error.visible {
+    display: block;
+  }
+
+  .consent {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+    font-weight: 400;
+    color: var(--text-secondary);
+    cursor: pointer;
+  }
+
+  .consent input {
+    flex-shrink: 0;
+    width: 26px;
+    height: 26px;
+    margin-top: 0.15rem;
+    accent-color: var(--accent);
+  }
+
+  .botcheck {
+    display: none;
+  }
+
+  .form-actions .button {
+    min-width: 200px;
+  }
+
+  .form-status:empty {
+    display: none;
+  }
+
+  .form-status {
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius-small);
+    font-size: 1.1rem;
+  }
+
+  .form-status.success {
+    background: #e7f4ea;
+    color: #1d5b2c;
+  }
+
+  .form-status.error {
+    background: #fdecea;
+    color: #8c1d18;
+  }
+
+  .fallback {
+    text-align: center;
+    font-size: 1.2rem;
+  }
+
+  /* Fields side by side only when the form itself is wide enough */
+  .contact-form {
+    container-type: inline-size;
+  }
+
+  @container (max-width: 520px) {
+    .form-row {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @media (max-width: 700px) {
+    .form-card {
+      padding: 1.5rem;
+    }
+
+    .form-actions .button {
+      width: 100%;
+    }
+  }
+</style>
+
+<script>
+  import { contact } from '../data/content';
+
+  const form = document.querySelector<HTMLFormElement>('#contact-form');
+
+  if (form) {
+    const status = form.querySelector<HTMLElement>('.form-status')!;
+    const submitButton = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+    const fields = [...form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('[required]')];
+
+    function showError(field: HTMLInputElement | HTMLTextAreaElement, show: boolean) {
+      const error = document.getElementById(field.getAttribute('aria-describedby') ?? '');
+      field.setAttribute('aria-invalid', String(show));
+      if (error) {
+        error.textContent = show ? error.dataset.message ?? '' : '';
+        error.classList.toggle('visible', show);
+      }
+    }
+
+    function isValid(field: HTMLInputElement | HTMLTextAreaElement) {
+      if (field instanceof HTMLInputElement && field.type === 'checkbox') return field.checked;
+      return field.value.trim() !== '' && field.checkValidity();
+    }
+
+    // Clear a field's error as soon as the person fixes it
+    fields.forEach((field) => {
+      const event = field instanceof HTMLInputElement && field.type === 'checkbox' ? 'change' : 'input';
+      field.addEventListener(event, () => {
+        if (field.getAttribute('aria-invalid') === 'true' && isValid(field)) showError(field, false);
+      });
+    });
+
+    function setStatus(type: 'success' | 'error' | '', message: string) {
+      status.className = `form-status ${type}`;
+      status.textContent = message;
+    }
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      setStatus('', '');
+
+      const invalid = fields.filter((field) => !isValid(field));
+      fields.forEach((field) => showError(field, invalid.includes(field)));
+      if (invalid.length > 0) {
+        invalid[0].focus();
+        return;
+      }
+
+      if (form.dataset.configured !== 'true') {
+        setStatus('error', `O formulário ainda não está configurado. Envie um email para ${contact.email} ou ligue ${contact.phone}.`);
+        return;
+      }
+
+      submitButton.disabled = true;
+      submitButton.textContent = 'A enviar…';
+
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify(Object.fromEntries(new FormData(form))),
+        });
+        const result = await response.json();
+
+        if (response.ok && result.success) {
+          form.reset();
+          setStatus('success', 'Obrigado! A sua mensagem foi enviada. Entraremos em contacto consigo brevemente.');
+        } else {
+          throw new Error(result.message ?? 'Erro ao enviar');
+        }
+      } catch {
+        setStatus('error', `Não foi possível enviar a mensagem. Tente novamente ou ligue ${contact.phone}.`);
+      } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = 'Enviar mensagem';
+      }
+    });
+  }
+</script>

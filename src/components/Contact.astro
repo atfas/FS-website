@@ -1,4 +1,5 @@
 ---
+import ContactForm from './ContactForm.astro';
 import { contact } from '../data/content';
 ---
 
@@ -6,44 +7,63 @@ import { contact } from '../data/content';
   <div class="container">
     <div class="section-header" data-reveal>
       <h2 class="section-title">Contactos</h2>
-      <p class="section-subtitle">Ligue, envie um email ou visite-nos no escritório.</p>
+      <p class="section-subtitle">Ligue, escreva-nos ou visite-nos no escritório.</p>
     </div>
 
-    <div class="contact-grid">
-      <a href={contact.phoneHref} class="contact-card card" data-reveal>
-        <span class="icon-circle"><i class="fas fa-phone" aria-hidden="true"></i></span>
-        <span class="contact-label">Telefone</span>
-        <span class="contact-value">{contact.phone}</span>
-        <span class="contact-action">Tocar para ligar</span>
-      </a>
-
-      <a href={`mailto:${contact.email}`} class="contact-card card" data-reveal style="--reveal-delay: 100ms">
-        <span class="icon-circle"><i class="fas fa-envelope" aria-hidden="true"></i></span>
-        <span class="contact-label">Email</span>
-        <span class="contact-value contact-email">{contact.email}</span>
-        <span class="contact-action">Enviar email</span>
-      </a>
-
-      <div class="contact-card card" data-reveal style="--reveal-delay: 200ms">
-        <span class="icon-circle"><i class="fas fa-clock" aria-hidden="true"></i></span>
-        <span class="contact-label">Horário</span>
-        <span class="contact-value">
-          {contact.hoursLines.map((line, i) => (i === 0 ? line : <Fragment><br />{line}</Fragment>))}
-        </span>
+    <div class="contact-layout">
+      <div id="mensagem" class="contact-form-column" data-reveal>
+        <ContactForm />
       </div>
+
+      <ul class="contact-details" data-reveal style="--reveal-delay: 120ms">
+        <li>
+          <a href={contact.phoneHref} class="detail card">
+            <span class="icon-circle"><i class="fas fa-phone" aria-hidden="true"></i></span>
+            <span class="detail-text">
+              <span class="detail-label">Telefone</span>
+              <span class="detail-value">{contact.phone}</span>
+              <span class="detail-action">Ligar</span>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a href={`mailto:${contact.email}`} class="detail card">
+            <span class="icon-circle"><i class="fas fa-envelope" aria-hidden="true"></i></span>
+            <span class="detail-text">
+              <span class="detail-label">Email</span>
+              <span class="detail-value detail-email">{contact.email}</span>
+              <span class="detail-action">Enviar email</span>
+            </span>
+          </a>
+        </li>
+        <li>
+          <div class="detail card">
+            <span class="icon-circle"><i class="fas fa-clock" aria-hidden="true"></i></span>
+            <span class="detail-text">
+              <span class="detail-label">Horário</span>
+              <span class="detail-value">
+                {contact.hoursLines.map((line, i) => (i === 0 ? line : <Fragment><br />{line}</Fragment>))}
+              </span>
+            </span>
+          </div>
+        </li>
+        <li>
+          <div class="detail card">
+            <span class="icon-circle"><i class="fas fa-location-dot" aria-hidden="true"></i></span>
+            <span class="detail-text">
+              <span class="detail-label">Morada</span>
+              <address class="detail-value">
+                {contact.addressLines.map((line, i) => (i === 0 ? line : <Fragment><br />{line}</Fragment>))}
+              </address>
+              <a href={contact.mapsUrl} target="_blank" rel="noopener" class="detail-action">Abrir no Google Maps</a>
+            </span>
+          </div>
+        </li>
+      </ul>
     </div>
 
-    <div class="location card" data-reveal>
-      <div class="location-text">
-        <span class="icon-circle"><i class="fas fa-location-dot" aria-hidden="true"></i></span>
-        <h3 class="contact-label">Morada</h3>
-        <address class="contact-value">
-          {contact.addressLines.map((line, i) => (i === 0 ? line : <Fragment><br />{line}</Fragment>))}
-        </address>
-        <a href={contact.mapsUrl} target="_blank" rel="noopener" class="link-arrow">Abrir no Google Maps</a>
-      </div>
+    <div class="map card" data-reveal>
       <iframe
-        class="location-map"
         src={contact.mapEmbedUrl}
         loading="lazy"
         allowfullscreen
@@ -53,97 +73,122 @@ import { contact } from '../data/content';
 </section>
 
 <style>
-  .contact-grid {
+  .contact-layout {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.25rem;
-    margin-bottom: 1.25rem;
+    grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+    gap: 1.5rem;
+    align-items: start;
   }
 
-  .contact-card {
+  .contact-details {
     display: flex;
     flex-direction: column;
+    gap: 1rem;
+    list-style: none;
+  }
+
+  .detail {
+    display: flex;
     align-items: flex-start;
-    gap: 0.25rem;
-    padding: 2rem;
+    gap: 1.1rem;
+    padding: 1.5rem;
     color: var(--text);
     text-decoration: none;
     border: 1px solid rgba(0, 0, 0, 0.06);
   }
 
-  a.contact-card:hover {
+  a.detail:hover {
     border-color: var(--accent);
   }
 
-  .contact-card .icon-circle {
-    margin-bottom: 1rem;
+  .detail .icon-circle {
+    width: 52px;
+    height: 52px;
+    font-size: 1.3rem;
   }
 
-  .contact-label {
+  .detail-text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .detail-label {
     font-size: 1rem;
     font-weight: 600;
     color: var(--text-secondary);
   }
 
-  .contact-value {
-    font-size: 1.35rem;
+  .detail-value {
+    font-size: 1.25rem;
     font-weight: 600;
     font-style: normal;
     line-height: 1.4;
   }
 
-  .contact-email {
-    font-size: 1.1rem;
+  .detail-email {
+    font-size: 1.05rem;
     overflow-wrap: anywhere;
   }
 
-  .contact-action {
-    margin-top: 0.75rem;
+  .detail-action {
+    margin-top: 0.4rem;
     color: var(--link);
     font-weight: 600;
+    text-decoration: none;
   }
 
-  .location {
-    display: grid;
-    grid-template-columns: 1fr 1.4fr;
+  .detail-action::after {
+    content: ' ›';
+  }
+
+  a.detail-action:hover {
+    text-decoration: underline;
+  }
+
+  .map {
+    margin-top: 1.5rem;
     overflow: hidden;
     border: 1px solid rgba(0, 0, 0, 0.06);
   }
 
-  .location-text {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.25rem;
-    padding: 2rem;
-  }
-
-  .location-text .icon-circle {
-    margin-bottom: 1rem;
-  }
-
-  .location-text .link-arrow {
-    margin-top: 1rem;
-  }
-
-  .location-map {
+  .map iframe {
+    display: block;
     width: 100%;
-    height: 100%;
-    min-height: 360px;
+    height: 380px;
     border: none;
   }
 
   @media (max-width: 900px) {
-    .contact-grid {
-      grid-template-columns: 1fr;
+    .contact-layout {
+      grid-template-columns: minmax(0, 1fr);
     }
 
-    .location {
-      grid-template-columns: 1fr;
+    /* On phones and tablets, phone/email/address come before the form */
+    .contact-details {
+      order: -1;
     }
 
-    .location-map {
-      min-height: 300px;
+    .map iframe {
+      height: 300px;
+    }
+  }
+
+  /* Small phones: tighter cards so the email address fits on one line */
+  @media (max-width: 420px) {
+    .detail {
+      gap: 0.9rem;
+      padding: 1.25rem;
+    }
+
+    .detail .icon-circle {
+      width: 44px;
+      height: 44px;
+      font-size: 1.1rem;
+    }
+
+    .detail-email {
+      font-size: 0.95rem;
     }
   }
 </style>

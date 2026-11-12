@@ -1,0 +1,179 @@
+---
+import { PUBLIC_CAL_LINK } from 'astro:env/client';
+import { contact } from '../data/content';
+
+const calLink = PUBLIC_CAL_LINK?.replace(/^https?:\/\/(app\.)?cal\.com\//, '').replace(/^\/+|\/+$/g, '') ?? '';
+---
+
+<section id="marcar" class="section section-alt">
+  <div class="container">
+    <div class="section-header" data-reveal>
+      <h2 class="section-title">Marcar consulta</h2>
+      <p class="section-subtitle">Escolha o dia e a hora que lhe dão mais jeito.</p>
+    </div>
+
+    {
+      calLink ? (
+        <div class="booking card" data-reveal>
+          <div id="cal-booking" class="cal-embed" data-cal-link={calLink}>
+            <p class="cal-loading">A carregar o calendário…</p>
+          </div>
+          <noscript>
+            <p class="booking-fallback">
+              <a href={`https://cal.com/${calLink}`}>Abrir o calendário de marcações</a>
+            </p>
+          </noscript>
+        </div>
+      ) : (
+        <div class="booking card booking-empty" data-reveal>
+          {import.meta.env.DEV && (
+            <p class="dev-warning" role="note">
+              Modo de desenvolvimento: falta <code>PUBLIC_CAL_LINK</code> no ficheiro <code>.env</code>. No site publicado
+              aparece só o texto abaixo.
+            </p>
+          )}
+          <p>
+            Para marcar uma consulta, ligue para <a href={contact.phoneHref}>{contact.phone}</a> ou{' '}
+            <a href="#mensagem">envie-nos uma mensagem</a>.
+          </p>
+        </div>
+      )
+    }
+
+    <p class="booking-help" data-reveal>
+      Prefere marcar por telefone? Ligue para <a href={contact.phoneHref}>{contact.phone}</a>, de segunda a sexta, das
+      10h00 às 19h00.
+    </p>
+  </div>
+</section>
+
+<style>
+  .booking {
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+  }
+
+  .cal-embed {
+    width: 100%;
+    min-height: 620px;
+    overflow: auto;
+  }
+
+  .cal-loading {
+    padding: 4rem 1rem;
+    text-align: center;
+    color: var(--text-secondary);
+  }
+
+  .booking-empty {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 2.5rem;
+    text-align: center;
+    font-size: 1.2rem;
+  }
+
+  .booking-empty a,
+  .booking-help a {
+    font-weight: 600;
+  }
+
+  .dev-warning {
+    margin-bottom: 1.5rem;
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius-small);
+    background: #fff8e1;
+    color: #5c4300;
+    font-size: 1rem;
+    text-align: left;
+  }
+
+  .booking-fallback {
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .booking-help {
+    margin-top: 2rem;
+    text-align: center;
+    color: var(--text-secondary);
+  }
+</style>
+
+<script>
+  const container = document.querySelector<HTMLElement>('#cal-booking');
+
+  // Official Cal.com embed loader (https://cal.com/docs/core-features/embed)
+  function loadCal(calLink: string) {
+    const w = window as any;
+    (function (C: any, A: string, L: string) {
+      const p = function (a: any, ar: any) {
+        a.q.push(ar);
+      };
+      const d = C.document;
+      C.Cal =
+        C.Cal ||
+        function () {
+          const cal = C.Cal;
+          const ar = arguments;
+          if (!cal.loaded) {
+            cal.ns = {};
+            cal.q = cal.q || [];
+            d.head.appendChild(d.createElement('script')).src = A;
+            cal.loaded = true;
+          }
+          if (ar[0] === L) {
+            const api: any = function () {
+              p(api, arguments);
+            };
+            const namespace = ar[1];
+            api.q = api.q || [];
+            if (typeof namespace === 'string') {
+              cal.ns[namespace] = cal.ns[namespace] || api;
+              p(cal.ns[namespace], ar);
+              p(cal, ['initNamespace', namespace]);
+            } else p(cal, ar);
+            return;
+          }
+          p(cal, ar);
+        };
+    })(w, 'https://app.cal.com/embed/embed.js', 'init');
+
+    w.Cal('init', 'consulta', { origin: 'https://cal.com' });
+    w.Cal.ns.consulta('inline', {
+      elementOrSelector: '#cal-booking',
+      calLink,
+      config: { layout: 'month_view', theme: 'light' },
+    });
+    w.Cal.ns.consulta('ui', {
+      theme: 'light',
+      hideEventTypeDetails: false,
+      layout: 'month_view',
+      cssVarsPerTheme: { light: { 'cal-brand': '#1f3a5f' } },
+    });
+
+    // Remove the loading text once Cal.com has drawn the calendar
+    const observer = new MutationObserver(() => {
+      if (container?.querySelector('iframe')) {
+        container.querySelector('.cal-loading')?.remove();
+        observer.disconnect();
+      }
+    });
+    if (container) observer.observe(container, { childList: true, subtree: true });
+  }
+
+  // Only download the calendar when the visitor gets near it
+  if (container?.dataset.calLink) {
+    const calLink = container.dataset.calLink;
+    const lazy = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          lazy.disconnect();
+          loadCal(calLink);
+        }
+      },
+      { rootMargin: '600px 0px' },
+    );
+    lazy.observe(container);
+  }
+</script>

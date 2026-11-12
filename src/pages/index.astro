@@ -2,11 +2,12 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Navbar from '../components/Navbar.astro';
 import Hero from '../components/Hero.astro';
-import About from '../components/About.astro';
 import Services from '../components/Services.astro';
+import About from '../components/About.astro';
 import Team from '../components/Team.astro';
-import Partners from '../components/Partners.astro';
+import Booking from '../components/Booking.astro';
 import Contact from '../components/Contact.astro';
+import Partners from '../components/Partners.astro';
 import Footer from '../components/Footer.astro';
 ---
 
@@ -16,12 +17,14 @@ import Footer from '../components/Footer.astro';
 >
   <Navbar />
   <main id="main">
+    <!-- The order follows the visitor's questions: -->
     <Hero />
-    <About />
-    <Services />
-    <Team />
+    <Services />   <!-- Do they handle my case? -->
+    <About />      <!-- Who are they? -->
+    <Team />       <!-- Can I trust them? -->
+    <Booking />    <!-- I want to book -->
+    <Contact />    <!-- How do I reach them? (includes the message form) -->
     <Partners />
-    <Contact />
   </main>
   <Footer />
 </BaseLayout>

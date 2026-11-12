@@ -2,11 +2,14 @@ import type { ImageMetadata } from 'astro';
 import fotoAna from '../assets/images/foto_ana.jpg';
 import fotoManuel from '../assets/images/foto_manuel.jpeg';
 
-export const navLinks = [
-  { href: '#about', label: 'Quem Somos' },
-  { href: '#services', label: 'Áreas' },
-  { href: '#team', label: 'Advogados' },
-  { href: '#contact', label: 'Contactos' },
+// "/#…" so the links also work from other pages (e.g. /privacidade).
+// mobileOnly links appear in the phone menu and footer, but not in the desktop navbar (to keep it uncluttered).
+export const navLinks: { href: string; label: string; mobileOnly?: boolean }[] = [
+  { href: '/#services', label: 'Áreas' },
+  { href: '/#about', label: 'Quem Somos' },
+  { href: '/#team', label: 'Advogados' },
+  { href: '/#marcar', label: 'Marcar consulta', mobileOnly: true },
+  { href: '/#contact', label: 'Contactos' },
 ];
 
 export const hero = {
