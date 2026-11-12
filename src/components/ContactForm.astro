@@ -64,7 +64,7 @@ const showForm = isConfigured || import.meta.env.DEV;
 
             <div class="field">
               <label for="cf-message">Mensagem</label>
-              <textarea id="cf-message" name="message" rows="6" required aria-describedby="cf-message-error"></textarea>
+              <textarea id="cf-message" name="message" rows="4" required aria-describedby="cf-message-error"></textarea>
               <p class="field-error" id="cf-message-error" data-message="Escreva a sua mensagem." />
             </div>
 
@@ -110,7 +110,7 @@ const showForm = isConfigured || import.meta.env.DEV;
   }
 
   .form-intro {
-    margin: 0.35rem 0 2rem;
+    margin: 0.35rem 0 1.5rem;
     color: var(--text-secondary);
   }
 
@@ -126,13 +126,13 @@ const showForm = isConfigured || import.meta.env.DEV;
   .contact-form {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1.25rem;
   }
 
   .form-row {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1.5rem;
+    gap: 1.25rem 1rem;
   }
 
   .field {
@@ -250,7 +250,7 @@ const showForm = isConfigured || import.meta.env.DEV;
     container-type: inline-size;
   }
 
-  @container (max-width: 520px) {
+  @container (max-width: 440px) {
     .form-row {
       grid-template-columns: minmax(0, 1fr);
     }

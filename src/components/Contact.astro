@@ -77,7 +77,15 @@ import { contact } from '../data/content';
     display: grid;
     grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
     gap: 1.5rem;
-    align-items: start;
+    align-items: stretch; /* both columns end at the same height */
+  }
+
+  .contact-form-column {
+    display: flex;
+  }
+
+  .contact-form-column > :global(.form-card) {
+    flex: 1;
   }
 
   .contact-details {
@@ -87,9 +95,19 @@ import { contact } from '../data/content';
     list-style: none;
   }
 
+  /* The four cards share the column's height evenly */
+  .contact-details > li {
+    display: flex;
+    flex: 1;
+  }
+
+  .contact-details .detail {
+    flex: 1;
+  }
+
   .detail {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: 1.1rem;
     padding: 1.5rem;
     color: var(--text);
