@@ -1,0 +1,50 @@
+---
+import { Image } from 'astro:assets';
+import justicePicture from '../assets/images/justice_picture.png';
+---
+
+<div id="showcase">
+  <div id="showcase_block">
+    <!-- Image placed behind the text -->
+    <Image src={justicePicture} class="justica_img" alt="" width={600} loading="eager" />
+
+    <!-- Showcase text placed in front of the image -->
+    <div id="showcase_text">
+      <h1 class="hero-title">Fernandes <span>&</span> Saraiva</h1>
+      <p class="hero-subtitle">Sociedade de Advogados <span>R.L.</span></p>
+    </div>
+  </div>
+</div>
+
+<style>
+  #showcase {
+    width: 100%;
+    padding: 4% 2%;
+    text-align: center;
+    position: relative;
+  }
+
+  #showcase_block {
+    background-color: rgb(230, 230, 230);
+    min-height: 50vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+  }
+
+  #showcase_text {
+    position: relative;
+    z-index: 2;
+    border-bottom: 1px solid #efbc02;
+  }
+
+  #showcase_text span {
+    font-size: 80%;
+  }
+
+  .hero-subtitle {
+    font-weight: 700;
+  }
+</style>

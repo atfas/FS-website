@@ -1,0 +1,23 @@
+---
+import { Image } from 'astro:assets';
+import { team } from '../data/content';
+---
+
+<section id="team" class="section team">
+  <div class="container">
+    <h2 class="section-title fade-in">Advogados</h2>
+    <div class="team-grid">
+      {team.map((member) => (
+        <div class="team-member fade-in">
+          <div class="member-image">
+            <Image src={member.photo} alt={member.name} width={700} />
+          </div>
+          <div class="member-info">
+            <h3 class="member-name">{member.name}</h3>
+            <p class="member-bio">{member.bio}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

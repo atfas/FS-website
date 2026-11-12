@@ -1,0 +1,73 @@
+---
+import { navLinks } from '../data/content';
+---
+
+<nav class="navbar">
+  <div class="nav-container">
+    <a href="#home" class="logo">Fernandes & Saraiva</a>
+    <ul class="nav-menu">
+      {navLinks.map((link) => (
+        <li><a href={link.href} class="nav-link">{link.label}</a></li>
+      ))}
+    </ul>
+    <button class="mobile-menu" type="button" aria-label="Abrir menu" aria-expanded="false">
+      <i class="fas fa-bars"></i>
+    </button>
+  </div>
+</nav>
+
+<style>
+  .mobile-menu {
+    background: none;
+    border: none;
+  }
+</style>
+
+<script>
+  const navbar = document.querySelector<HTMLElement>('.navbar')!;
+  const navMenu = document.querySelector<HTMLElement>('.nav-menu')!;
+  const mobileMenu = document.querySelector<HTMLButtonElement>('.mobile-menu')!;
+  const icon = mobileMenu.querySelector('i')!;
+
+  function setMenuOpen(open: boolean) {
+    navMenu.classList.toggle('active', open);
+    mobileMenu.setAttribute('aria-expanded', String(open));
+    icon.classList.toggle('fa-bars', !open);
+    icon.classList.toggle('fa-times', open);
+  }
+
+  // Toggle the mobile menu, swapping the hamburger icon for an X
+  mobileMenu.addEventListener('click', () => {
+    setMenuOpen(!navMenu.classList.contains('active'));
+  });
+
+  // Close the menu when a link is clicked
+  document.querySelectorAll('.nav-link').forEach((link) => {
+    link.addEventListener('click', () => setMenuOpen(false));
+  });
+
+  // Close the menu when clicking outside it
+  document.addEventListener('click', (event) => {
+    const target = event.target as Node;
+    if (!navMenu.contains(target) && !mobileMenu.contains(target) && navMenu.classList.contains('active')) {
+      setMenuOpen(false);
+    }
+  });
+
+  // Smooth scrolling for in-page links
+  document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((anchor) => {
+    anchor.addEventListener('click', (e) => {
+      const href = anchor.getAttribute('href');
+      const target = href ? document.querySelector(href) : null;
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  // Make the navbar slightly more opaque after scrolling
+  window.addEventListener('scroll', () => {
+    navbar.style.background = window.scrollY > 100 ? 'rgba(255, 255, 255, 0.98)' : 'rgba(255, 255, 255, 0.95)';
+  });
+</script>

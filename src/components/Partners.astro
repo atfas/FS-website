@@ -1,0 +1,16 @@
+---
+import { partner } from '../data/content';
+---
+
+<section id="partners" class="section">
+  <div class="container">
+    <h2 class="section-title fade-in">Parceiros</h2>
+    <div class="partners-content fade-in">
+      <p>{partner.text}</p>
+      <a href={partner.url} target="_blank" rel="noopener" class="partner-link">
+        <i class="fas fa-external-link-alt"></i>
+        {partner.linkLabel}
+      </a>
+    </div>
+  </div>
+</section>

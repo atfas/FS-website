@@ -1,0 +1,47 @@
+---
+import { contact } from '../data/content';
+---
+
+<section id="contact" class="section contact">
+  <div class="container">
+    <h2 class="section-title fade-in">Contactos</h2>
+    <div class="contact-grid">
+      <div class="contact-item fade-in">
+        <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+        <h3 class="contact-title">Morada</h3>
+        <address class="contact-info">
+          {contact.addressLines.map((line, i) => (i === 0 ? line : <Fragment><br />{line}</Fragment>))}
+        </address>
+      </div>
+      <div class="contact-item fade-in">
+        <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+        <h3 class="contact-title">Email</h3>
+        <div class="contact-info">
+          <a href={`mailto:${contact.email}`}>{contact.email}</a>
+        </div>
+      </div>
+      <div class="contact-item fade-in">
+        <div class="contact-icon"><i class="fas fa-phone"></i></div>
+        <h3 class="contact-title">Telefone</h3>
+        <div class="contact-info">{contact.phone}</div>
+      </div>
+      <div class="contact-item fade-in">
+        <div class="contact-icon"><i class="fas fa-clock"></i></div>
+        <h3 class="contact-title">Horário</h3>
+        <div class="contact-info">
+          {contact.hoursLines.map((line, i) => (i === 0 ? line : <Fragment><br />{line}</Fragment>))}
+        </div>
+      </div>
+    </div>
+
+    <div class="map-container fade-in">
+      <iframe src={contact.mapEmbedUrl} allowfullscreen loading="lazy" title="Localização Fernandes & Saraiva"></iframe>
+    </div>
+  </div>
+</section>
+
+<style>
+  address {
+    font-style: normal;
+  }
+</style>

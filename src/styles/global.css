@@ -26,6 +26,11 @@ body {
     overflow-x: hidden;
 }
 
+/* Keep proportions when CSS changes an image's width (Astro's <Image> sets width/height attributes) */
+img {
+    height: auto;
+}
+
 .container {
     max-width: 1200px;
     margin: 0 auto;

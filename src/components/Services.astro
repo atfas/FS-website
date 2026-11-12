@@ -1,0 +1,19 @@
+---
+import { services } from '../data/content';
+---
+
+<section id="services" class="section">
+  <div class="container">
+    <h2 class="section-title fade-in">Áreas de Atividade</h2>
+    <div class="services-grid">
+      {services.map((service) => (
+        <div class="service-card fade-in">
+          <div class="service-icon">
+            <i class={`fas ${service.icon}`}></i>
+          </div>
+          <h3 class="service-title">{service.title}</h3>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

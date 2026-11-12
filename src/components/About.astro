@@ -1,0 +1,32 @@
+---
+import { Image } from 'astro:assets';
+import areasTrabalho from '../assets/images/areas_trabalho.png';
+import { aboutParagraphs } from '../data/content';
+---
+
+<section id="about" class="section about">
+  <div class="container">
+    <h2 class="section-title fade-in">Quem Somos</h2>
+    <div class="about-content">
+      <div class="about-text fade-in">
+        {aboutParagraphs.map((paragraph) => <p>{paragraph}</p>)}
+      </div>
+      <div class="about-image fade-in">
+        <div class="about-image-frame">
+          <Image src={areasTrabalho} alt="Áreas de trabalho" width={600} />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about-image-frame {
+    height: 300px;
+    background: var(--light-gold);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+</style>
