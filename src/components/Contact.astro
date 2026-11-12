@@ -4,27 +4,27 @@ import { contact } from '../data/content';
 
 <section id="contact" class="section">
   <div class="container">
-    <div class="section-header">
+    <div class="section-header" data-reveal>
       <h2 class="section-title">Contactos</h2>
       <p class="section-subtitle">Ligue, envie um email ou visite-nos no escritório.</p>
     </div>
 
     <div class="contact-grid">
-      <a href={contact.phoneHref} class="contact-card card">
+      <a href={contact.phoneHref} class="contact-card card" data-reveal>
         <span class="icon-circle"><i class="fas fa-phone" aria-hidden="true"></i></span>
         <span class="contact-label">Telefone</span>
         <span class="contact-value">{contact.phone}</span>
         <span class="contact-action">Tocar para ligar</span>
       </a>
 
-      <a href={`mailto:${contact.email}`} class="contact-card card">
+      <a href={`mailto:${contact.email}`} class="contact-card card" data-reveal style="--reveal-delay: 100ms">
         <span class="icon-circle"><i class="fas fa-envelope" aria-hidden="true"></i></span>
         <span class="contact-label">Email</span>
         <span class="contact-value contact-email">{contact.email}</span>
         <span class="contact-action">Enviar email</span>
       </a>
 
-      <div class="contact-card card">
+      <div class="contact-card card" data-reveal style="--reveal-delay: 200ms">
         <span class="icon-circle"><i class="fas fa-clock" aria-hidden="true"></i></span>
         <span class="contact-label">Horário</span>
         <span class="contact-value">
@@ -33,7 +33,7 @@ import { contact } from '../data/content';
       </div>
     </div>
 
-    <div class="location card">
+    <div class="location card" data-reveal>
       <div class="location-text">
         <span class="icon-circle"><i class="fas fa-location-dot" aria-hidden="true"></i></span>
         <h3 class="contact-label">Morada</h3>

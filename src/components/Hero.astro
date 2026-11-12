@@ -6,7 +6,7 @@ import { hero, contact } from '../data/content';
 
 <section class="hero section-alt" id="top">
   <div class="container hero-inner">
-    <div class="hero-text">
+    <div class="hero-text" data-reveal>
       <p class="hero-eyebrow">{hero.eyebrow}</p>
       <h1 class="hero-title">{hero.title}</h1>
       <p class="hero-lead">{hero.lead}</p>
@@ -15,7 +15,7 @@ import { hero, contact } from '../data/content';
         <a href={`mailto:${contact.email}`} class="link-arrow">Enviar email</a>
       </div>
     </div>
-    <div class="hero-image">
+    <div class="hero-image" data-reveal style="--reveal-delay: 200ms">
       <Image src={justicePicture} alt="" width={560} loading="eager" />
     </div>
   </div>

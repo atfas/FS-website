@@ -5,14 +5,14 @@ import { team } from '../data/content';
 
 <section id="team" class="section">
   <div class="container">
-    <div class="section-header">
+    <div class="section-header" data-reveal>
       <h2 class="section-title">Advogados</h2>
       <p class="section-subtitle">Os sócios fundadores, com 25 anos de experiência.</p>
     </div>
 
     <div class="team-grid">
-      {team.map((member) => (
-        <article class="member card">
+      {team.map((member, i) => (
+        <article class="member card" data-reveal style={`--reveal-delay: ${i * 150}ms`}>
           <Image src={member.photo} alt={`Fotografia de ${member.name}`} width={700} class="member-photo" />
           <div class="member-info">
             <h3 class="member-name">{member.name}</h3>

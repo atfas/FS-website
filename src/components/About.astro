@@ -6,23 +6,25 @@ import { aboutParagraphs, facts } from '../data/content';
 
 <section id="about" class="section">
   <div class="container">
-    <div class="section-header">
+    <div class="section-header" data-reveal>
       <h2 class="section-title">Quem Somos</h2>
       <p class="section-subtitle">Uma sociedade de advogados próxima de quem precisa de ajuda.</p>
     </div>
 
-    <Image src={courthouse} alt="Palácio da Justiça do Porto" width={1080} class="about-photo" />
+    <div data-reveal>
+      <Image src={courthouse} alt="Palácio da Justiça do Porto" width={1080} class="about-photo" />
+    </div>
 
     <ul class="facts">
-      {facts.map((fact) => (
-        <li class="fact">
+      {facts.map((fact, i) => (
+        <li class="fact" data-reveal style={`--reveal-delay: ${i * 120}ms`}>
           <span class="fact-value">{fact.value}</span>
           <span class="fact-label">{fact.label}</span>
         </li>
       ))}
     </ul>
 
-    <div class="about-text">
+    <div class="about-text" data-reveal>
       {aboutParagraphs.map((paragraph) => <p>{paragraph}</p>)}
     </div>
   </div>

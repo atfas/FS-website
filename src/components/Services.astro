@@ -4,21 +4,21 @@ import { services, contact } from '../data/content';
 
 <section id="services" class="section section-alt">
   <div class="container">
-    <div class="section-header">
+    <div class="section-header" data-reveal>
       <h2 class="section-title">Áreas de Atividade</h2>
       <p class="section-subtitle">Em que podemos ajudar?</p>
     </div>
 
     <ul class="services-grid">
-      {services.map((service) => (
-        <li class="service card">
+      {services.map((service, i) => (
+        <li class="service card" data-reveal style={`--reveal-delay: ${(i % 3) * 100}ms`}>
           <span class="icon-circle"><i class={`fas ${service.icon}`} aria-hidden="true"></i></span>
           <h3 class="service-title">{service.title}</h3>
         </li>
       ))}
     </ul>
 
-    <p class="services-cta">
+    <p class="services-cta" data-reveal>
       Não encontra o seu caso? <a href={contact.phoneHref}>Ligue-nos</a> e explicamos-lhe como podemos ajudar.
     </p>
   </div>
