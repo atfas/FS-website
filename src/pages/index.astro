@@ -1,30 +1,6 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Navbar from '../components/Navbar.astro';
-import Hero from '../components/Hero.astro';
-import Services from '../components/Services.astro';
-import About from '../components/About.astro';
-import Team from '../components/Team.astro';
-import Booking from '../components/Booking.astro';
-import Contact from '../components/Contact.astro';
-import Partners from '../components/Partners.astro';
-import Footer from '../components/Footer.astro';
+// Portuguese home page (/). The content lives in src/components/HomePage.astro.
+import HomePage from '../components/HomePage.astro';
 ---
 
-<BaseLayout
-  title="Fernandes & Saraiva - Sociedade de Advogados em Vila Nova de Gaia"
-  description="Sociedade de advogados em Vila Nova de Gaia desde 2008. Direito criminal, insolvências, societário, laboral, família, nacionalidade e imigração, imobiliário, sucessões e civil."
->
-  <Navbar />
-  <main id="main">
-    <!-- The order follows the visitor's questions: -->
-    <Hero />
-    <Services />   <!-- Do they handle my case? -->
-    <About />      <!-- Who are they? -->
-    <Team />       <!-- Can I trust them? -->
-    <Booking />    <!-- I want to book -->
-    <Contact />    <!-- How do I reach them? (includes the message form) -->
-    <Partners />
-  </main>
-  <Footer />
-</BaseLayout>
+<HomePage />

@@ -1,19 +1,23 @@
 ---
 import { Image } from 'astro:assets';
-import { team } from '../data/content';
+import { teamMembers } from '../data/content';
+import { getLang, useTranslations } from '../i18n';
+
+const t = useTranslations(getLang(Astro.url));
+const team = teamMembers.map((member, i) => ({ ...member, ...t.team.members[i] }));
 ---
 
 <section id="team" class="section">
   <div class="container">
     <div class="section-header" data-reveal>
-      <h2 class="section-title">Advogados</h2>
-      <p class="section-subtitle">Os sócios fundadores, com 25 anos de experiência.</p>
+      <h2 class="section-title">{t.team.title}</h2>
+      <p class="section-subtitle">{t.team.subtitle}</p>
     </div>
 
     <div class="team-grid">
       {team.map((member, i) => (
         <article class="member card" data-reveal style={`--reveal-delay: ${i * 150}ms`}>
-          <Image src={member.photo} alt={`Fotografia de ${member.name}`} width={700} class="member-photo" />
+          <Image src={member.photo} alt={t.team.photoAlt(member.name)} width={700} class="member-photo" />
           <div class="member-info">
             <h3 class="member-name">{member.name}</h3>
             <p class="member-role">{member.role}</p>

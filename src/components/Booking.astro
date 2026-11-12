@@ -1,26 +1,28 @@
 ---
 import { PUBLIC_CAL_LINK } from 'astro:env/client';
 import { contact } from '../data/content';
+import { getLang, useTranslations } from '../i18n';
 
+const t = useTranslations(getLang(Astro.url));
 const calLink = PUBLIC_CAL_LINK?.replace(/^https?:\/\/(app\.)?cal\.com\//, '').replace(/^\/+|\/+$/g, '') ?? '';
 ---
 
 <section id="marcar" class="section section-alt">
   <div class="container">
     <div class="section-header" data-reveal>
-      <h2 class="section-title">Marcar consulta</h2>
-      <p class="section-subtitle">Escolha o dia e a hora que lhe dão mais jeito.</p>
+      <h2 class="section-title">{t.booking.title}</h2>
+      <p class="section-subtitle">{t.booking.subtitle}</p>
     </div>
 
     {
       calLink ? (
         <div class="booking card" data-reveal>
           <div id="cal-booking" class="cal-embed" data-cal-link={calLink}>
-            <p class="cal-loading">A carregar o calendário…</p>
+            <p class="cal-loading">{t.booking.loading}</p>
           </div>
           <noscript>
             <p class="booking-fallback">
-              <a href={`https://cal.com/${calLink}`}>Abrir o calendário de marcações</a>
+              <a href={`https://cal.com/${calLink}`}>{t.booking.openCalendar}</a>
             </p>
           </noscript>
         </div>
@@ -33,16 +35,15 @@ const calLink = PUBLIC_CAL_LINK?.replace(/^https?:\/\/(app\.)?cal\.com\//, '').r
             </p>
           )}
           <p>
-            Para marcar uma consulta, ligue para <a href={contact.phoneHref}>{contact.phone}</a> ou{' '}
-            <a href="#mensagem">envie-nos uma mensagem</a>.
+            {t.booking.emptyBefore} <a href={contact.phoneHref}>{contact.phone}</a> {t.booking.emptyOr}{' '}
+            <a href="#mensagem">{t.booking.emptyLink}</a>.
           </p>
         </div>
       )
     }
 
     <p class="booking-help" data-reveal>
-      Prefere marcar por telefone? Ligue para <a href={contact.phoneHref}>{contact.phone}</a>, de segunda a sexta, das
-      10h00 às 19h00.
+      {t.booking.helpBefore} <a href={contact.phoneHref}>{contact.phone}</a>{t.booking.helpAfter}
     </p>
   </div>
 </section>

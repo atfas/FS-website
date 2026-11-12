@@ -1,0 +1,75 @@
+---
+// The home page, shared by / (Portuguese) and /en/ (English). The language comes from the URL.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from './Navbar.astro';
+import Hero from './Hero.astro';
+import Services from './Services.astro';
+import About from './About.astro';
+import Team from './Team.astro';
+import Booking from './Booking.astro';
+import Contact from './Contact.astro';
+import Partners from './Partners.astro';
+import Footer from './Footer.astro';
+import { contact, firm, teamMembers } from '../data/content';
+import { getLang, useTranslations, routes, languages } from '../i18n';
+
+const lang = getLang(Astro.url);
+const t = useTranslations(lang);
+const pageUrl = new URL(routes.home[lang], Astro.site).href;
+
+// Structured data: tells Google this is a law firm in Vila Nova de Gaia / Porto, with its address,
+// phone, opening hours and practice areas. Used for local results and the Maps panel.
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'LegalService',
+  '@id': new URL('/#firm', Astro.site).href,
+  name: firm.name,
+  legalName: firm.legalName,
+  description: t.meta.homeDescription,
+  url: pageUrl,
+  inLanguage: t.meta.htmlLang,
+  logo: new URL('/icon-512.png', Astro.site).href,
+  image: new URL('/og-image.png', Astro.site).href,
+  telephone: contact.phoneInternational,
+  email: contact.email,
+  foundingDate: String(firm.foundingYear),
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: `${contact.street}, 7.º andar, Sala 7.2`,
+    postalCode: contact.postalCode,
+    addressLocality: contact.city,
+    addressRegion: contact.region,
+    addressCountry: contact.country,
+  },
+  geo: { '@type': 'GeoCoordinates', ...contact.geo },
+  hasMap: contact.mapsUrl,
+  openingHoursSpecification: {
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+    opens: contact.opens,
+    closes: contact.closes,
+  },
+  areaServed: [
+    { '@type': 'City', name: 'Vila Nova de Gaia' },
+    { '@type': 'City', name: 'Porto' },
+  ],
+  knowsAbout: t.services.items,
+  knowsLanguage: languages.map((l) => useTranslations(l).meta.htmlLang),
+  founder: teamMembers.map((member) => ({ '@type': 'Person', name: member.name, jobTitle: 'Advogado' })),
+};
+---
+
+<BaseLayout title={t.meta.homeTitle} description={t.meta.homeDescription} route="home" schema={schema}>
+  <Navbar route="home" />
+  <main id="main">
+    <!-- The order follows the visitor's questions: -->
+    <Hero />
+    <Services />   <!-- Do they handle my case? -->
+    <About />      <!-- Who are they? -->
+    <Team />       <!-- Can I trust them? -->
+    <Booking />    <!-- I want to book -->
+    <Contact />    <!-- How do I reach them? (includes the message form) -->
+    <Partners />
+  </main>
+  <Footer />
+</BaseLayout>

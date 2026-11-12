@@ -1,13 +1,16 @@
 ---
 import ContactForm from './ContactForm.astro';
 import { contact } from '../data/content';
+import { getLang, useTranslations } from '../i18n';
+
+const t = useTranslations(getLang(Astro.url));
 ---
 
 <section id="contact" class="section">
   <div class="container">
     <div class="section-header" data-reveal>
-      <h2 class="section-title">Contactos</h2>
-      <p class="section-subtitle">Ligue, escreva-nos ou visite-nos no escritório.</p>
+      <h2 class="section-title">{t.contact.title}</h2>
+      <p class="section-subtitle">{t.contact.subtitle}</p>
     </div>
 
     <div class="contact-layout">
@@ -20,9 +23,9 @@ import { contact } from '../data/content';
           <a href={contact.phoneHref} class="detail card">
             <span class="icon-circle"><i class="fas fa-phone" aria-hidden="true"></i></span>
             <span class="detail-text">
-              <span class="detail-label">Telefone</span>
+              <span class="detail-label">{t.contact.phone}</span>
               <span class="detail-value">{contact.phone}</span>
-              <span class="detail-action">Ligar</span>
+              <span class="detail-action">{t.contact.call}</span>
             </span>
           </a>
         </li>
@@ -30,9 +33,9 @@ import { contact } from '../data/content';
           <a href={`mailto:${contact.email}`} class="detail card">
             <span class="icon-circle"><i class="fas fa-envelope" aria-hidden="true"></i></span>
             <span class="detail-text">
-              <span class="detail-label">Email</span>
+              <span class="detail-label">{t.contact.email}</span>
               <span class="detail-value detail-email">{contact.email}</span>
-              <span class="detail-action">Enviar email</span>
+              <span class="detail-action">{t.contact.sendEmail}</span>
             </span>
           </a>
         </li>
@@ -40,9 +43,9 @@ import { contact } from '../data/content';
           <div class="detail card">
             <span class="icon-circle"><i class="fas fa-clock" aria-hidden="true"></i></span>
             <span class="detail-text">
-              <span class="detail-label">Horário</span>
+              <span class="detail-label">{t.contact.hours}</span>
               <span class="detail-value">
-                {contact.hoursLines.map((line, i) => (i === 0 ? line : <Fragment><br />{line}</Fragment>))}
+                {t.contact.hoursLines.map((line, i) => (i === 0 ? line : <Fragment><br />{line}</Fragment>))}
               </span>
             </span>
           </div>
@@ -51,11 +54,11 @@ import { contact } from '../data/content';
           <div class="detail card">
             <span class="icon-circle"><i class="fas fa-location-dot" aria-hidden="true"></i></span>
             <span class="detail-text">
-              <span class="detail-label">Morada</span>
+              <span class="detail-label">{t.contact.address}</span>
               <address class="detail-value">
-                {contact.addressLines.map((line, i) => (i === 0 ? line : <Fragment><br />{line}</Fragment>))}
+                {t.contact.addressLines.map((line, i) => (i === 0 ? line : <Fragment><br />{line}</Fragment>))}
               </address>
-              <a href={contact.mapsUrl} target="_blank" rel="noopener" class="detail-action">Abrir no Google Maps</a>
+              <a href={contact.mapsUrl} target="_blank" rel="noopener" class="detail-action">{t.contact.openMaps}</a>
             </span>
           </div>
         </li>
@@ -63,11 +66,7 @@ import { contact } from '../data/content';
     </div>
 
     <div class="map card" data-reveal>
-      <iframe
-        src={contact.mapEmbedUrl}
-        loading="lazy"
-        allowfullscreen
-        title="Mapa com a localização do escritório Fernandes & Saraiva"></iframe>
+      <iframe src={contact.mapEmbedUrl(t.contact.mapLang)} loading="lazy" allowfullscreen title={t.contact.mapTitle}></iframe>
     </div>
   </div>
 </section>

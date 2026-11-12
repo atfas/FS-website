@@ -1,16 +1,19 @@
 ---
 import { partner } from '../data/content';
+import { getLang, useTranslations } from '../i18n';
+
+const t = useTranslations(getLang(Astro.url));
 ---
 
 <section id="partners" class="section section-alt">
   <div class="container">
     <div class="partner card" data-reveal>
-      <p class="partner-label">Parceiro</p>
+      <p class="partner-label">{t.partner.label}</p>
       <h2 class="partner-name">{partner.name}</h2>
-      <p class="partner-text">{partner.text}</p>
+      <p class="partner-text">{t.partner.text}</p>
       <a href={partner.url} target="_blank" rel="noopener" class="link-arrow">
-        {partner.linkLabel}
-        <span class="visually-hidden">(abre numa nova janela)</span>
+        {t.partner.linkLabel}
+        <span class="visually-hidden">{t.partner.newWindow}</span>
       </a>
     </div>
   </div>

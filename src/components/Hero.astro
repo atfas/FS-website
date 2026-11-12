@@ -1,18 +1,21 @@
 ---
 import { Image } from 'astro:assets';
 import justicePicture from '../assets/images/justice_picture.png';
-import { hero, contact } from '../data/content';
+import { contact, firm } from '../data/content';
+import { getLang, useTranslations } from '../i18n';
+
+const t = useTranslations(getLang(Astro.url));
 ---
 
 <section class="hero section-alt" id="top">
   <div class="container hero-inner">
     <div class="hero-text" data-reveal>
-      <p class="hero-eyebrow">{hero.eyebrow}</p>
-      <h1 class="hero-title">{hero.title}</h1>
-      <p class="hero-lead">{hero.lead}</p>
+      <p class="hero-eyebrow">{t.hero.eyebrow}</p>
+      <h1 class="hero-title">{firm.name}</h1>
+      <p class="hero-lead">{t.hero.lead}</p>
       <div class="hero-actions">
-        <a href={contact.phoneHref} class="button" aria-label={`Ligar para ${contact.phone}`}>Ligar</a>
-        <a href="#marcar" class="link-arrow">Marcar consulta</a>
+        <a href={contact.phoneHref} class="button" aria-label={t.nav.callAria(contact.phone)}>{t.hero.call}</a>
+        <a href="#marcar" class="link-arrow">{t.hero.book}</a>
       </div>
     </div>
     <div class="hero-image" data-reveal style="--reveal-delay: 200ms">

@@ -1,24 +1,28 @@
 ---
-import { navLinks, contact } from '../data/content';
+import { contact, firm, navSections } from '../data/content';
+import { getLang, useTranslations, routes, sectionHref } from '../i18n';
+
+const lang = getLang(Astro.url);
+const t = useTranslations(lang);
 const year = new Date().getFullYear();
 ---
 
 <footer class="footer">
   <div class="container footer-inner">
     <div>
-      <p class="footer-name">Fernandes & Saraiva</p>
-      <p>Sociedade de Advogados R.L.</p>
+      <p class="footer-name">{firm.name}</p>
+      <p>{t.footer.firmType}</p>
       <p>
         <a href={contact.phoneHref}>{contact.phone}</a> · <a href={`mailto:${contact.email}`}>{contact.email}</a>
       </p>
     </div>
     <ul class="footer-links">
-      {navLinks.map((link) => <li><a href={link.href}>{link.label}</a></li>)}
-      <li><a href="/privacidade">Privacidade</a></li>
+      {navSections.map((section) => <li><a href={sectionHref(lang, section.id)}>{t.nav.links[section.key]}</a></li>)}
+      <li><a href={routes.privacy[lang]}>{t.footer.privacy}</a></li>
     </ul>
   </div>
   <div class="container">
-    <p class="footer-copy">© {year} Fernandes & Saraiva. Todos os direitos reservados.</p>
+    <p class="footer-copy">© {year} {firm.name}. {t.footer.rights}</p>
   </div>
 </footer>
 

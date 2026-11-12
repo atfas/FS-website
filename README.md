@@ -20,6 +20,8 @@ Features:
 - **One-tap contact**: "Ligar" and "Enviar email" buttons in the hero and navbar, tappable phone and email cards, and an "Abrir no Google Maps" button.
 - **Responsive layout** with a mobile menu labelled "Menu" / "Fechar" that closes on link tap, outside click or Escape.
 - **Accessible**: skip link, visible keyboard focus, and respects the "reduce motion" setting.
+- **Portuguese and English**: Portuguese at `/`, English at `/en/`, with a language button in the navbar. Each version has its own title, description and `hreflang` tags, so Google shows the right one to each searcher.
+- **Local SEO**: `LegalService` structured data (address, phone, hours, practice areas), a sitemap and `robots.txt`.
 - **Optimised images**: Astro converts and resizes photos to WebP at build time.
 - Styling built on **CSS custom properties** (gold and navy palette), with the Apple system font (Inter from Google Fonts on other devices) and icons from **Font Awesome**.
 
@@ -43,14 +45,18 @@ Features:
     ├── layouts/
     │   └── BaseLayout.astro # <head>, fonts, icons, meta tags, skip link
     ├── components/         # Navbar, Hero, About, Services, Team, Partners, Contact, Footer
+    ├── i18n/
+    │   ├── pt.ts           # All Portuguese text
+    │   ├── en.ts           # All English text (same keys as pt.ts; TypeScript checks it)
+    │   └── index.ts        # Language helpers and the list of pages in each language
     ├── data/
-    │   └── content.ts      # All page text: practice areas, team bios, contacts
+    │   └── content.ts      # Data that's the same in every language: phone, email, address, photos
     ├── assets/images/      # Photos (optimised by Astro at build time)
     └── styles/
         └── global.css      # Colour variables, layout, animations and media queries
 ```
 
-To change text (a practice area, a bio, the phone number), edit `src/data/content.ts`.
+To change text, edit it in both `src/i18n/pt.ts` and `src/i18n/en.ts`. The phone number, email and address are in `src/data/content.ts`.
 
 ## Requirements
 

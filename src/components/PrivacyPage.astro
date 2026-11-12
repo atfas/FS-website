@@ -1,0 +1,80 @@
+---
+// Privacy policy, shared by /privacidade (Portuguese) and /en/privacy (English).
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from './Navbar.astro';
+import Footer from './Footer.astro';
+import { contact } from '../data/content';
+import { getLang, useTranslations, routes } from '../i18n';
+
+const lang = getLang(Astro.url);
+const t = useTranslations(lang);
+const emailLink = `<a href="mailto:${contact.email}">${contact.email}</a>`;
+---
+
+<BaseLayout title={t.meta.privacyTitle} description={t.meta.privacyDescription} route="privacy">
+  <Navbar route="privacy" />
+  <main id="main" class="section">
+    <article class="container legal">
+      <h1>{t.privacy.heading}</h1>
+      <p class="updated">{t.privacy.updated}</p>
+
+      {
+        t.privacy.sections.map((section) => (
+          <Fragment>
+            <h2>{section.title}</h2>
+            {section.paragraphs.map((paragraph) => (
+              <p set:html={paragraph.replaceAll('{email}', emailLink)} />
+            ))}
+          </Fragment>
+        ))
+      }
+
+      <p class="back"><a href={routes.home[lang]} class="link-arrow">{t.privacy.back}</a></p>
+    </article>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .legal {
+    max-width: 760px;
+  }
+
+  h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 5vw, 3rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+
+  .updated {
+    margin-top: 0.75rem;
+    color: var(--text-secondary);
+  }
+
+  h2 {
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  p,
+  li {
+    color: var(--text-secondary);
+  }
+
+  ul {
+    margin: 0.5rem 0 1rem 1.25rem;
+  }
+
+  li + li {
+    margin-top: 0.5rem;
+  }
+
+  .back {
+    margin-top: 3rem;
+  }
+</style>

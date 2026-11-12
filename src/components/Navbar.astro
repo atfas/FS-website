@@ -1,34 +1,58 @@
 ---
 import { Image } from 'astro:assets';
 import logoIcon from '../assets/images/logo-icon.png';
-import { navLinks, contact } from '../data/content';
+import { contact, firm, navSections } from '../data/content';
+import { getLang, useTranslations, routes, sectionHref, otherLang, type RouteName } from '../i18n';
+
+interface Props {
+  /** The current page, so the language button links to the same page in the other language */
+  route: RouteName;
+}
+
+const { route } = Astro.props;
+const lang = getLang(Astro.url);
+const t = useTranslations(lang);
+const switchLang = otherLang(lang);
+const switchHref = routes[route][switchLang];
+const switchHtmlLang = useTranslations(switchLang).meta.htmlLang;
 ---
 
 <header class="navbar">
-  <nav class="nav-container" aria-label="Navegação principal">
-    <a href="/#top" class="logo">
+  <nav class="nav-container" aria-label={t.nav.ariaLabel}>
+    <a href={sectionHref(lang, 'top')} class="logo">
       <Image src={logoIcon} alt="" width={36} height={36} class="logo-icon" loading="eager" />
-      <span>Fernandes & Saraiva</span>
+      <span>{firm.name}</span>
     </a>
 
     <ul class="nav-menu" id="nav-menu">
-      {navLinks.map((link) => (
-        <li class:list={{ 'mobile-only': link.mobileOnly }}><a href={link.href} class="nav-link">{link.label}</a></li>
+      {navSections.map((section) => (
+        <li class:list={{ 'mobile-only': section.mobileOnly }}>
+          <a href={sectionHref(lang, section.id)} class="nav-link">{t.nav.links[section.key]}</a>
+        </li>
       ))}
       <li class="nav-phone-mobile">
-        <a href={contact.phoneHref} aria-label={`Ligar para ${contact.phone}`}>
+        <a href={contact.phoneHref} aria-label={t.nav.callAria(contact.phone)}>
           <i class="fas fa-phone" aria-hidden="true"></i> {contact.phone}
+        </a>
+      </li>
+      <li class="nav-lang-mobile">
+        <a href={switchHref} hreflang={switchHtmlLang} lang={switchHtmlLang} aria-label={t.nav.switchAria}>
+          <i class="fas fa-globe" aria-hidden="true"></i> {t.nav.switchLabel}
         </a>
       </li>
     </ul>
 
-    <a href={contact.phoneHref} class="nav-phone" aria-label={`Ligar para ${contact.phone}`}>
+    <a href={contact.phoneHref} class="nav-phone" aria-label={t.nav.callAria(contact.phone)}>
       <i class="fas fa-phone" aria-hidden="true"></i> {contact.phone}
     </a>
 
-    <button class="menu-toggle" type="button" aria-controls="nav-menu" aria-expanded="false">
+    <a href={switchHref} class="nav-lang" hreflang={switchHtmlLang} lang={switchHtmlLang} aria-label={t.nav.switchAria} title={t.nav.switchLabel}>
+      <i class="fas fa-globe" aria-hidden="true"></i> {t.nav.switchShort}
+    </a>
+
+    <button class="menu-toggle" type="button" aria-controls="nav-menu" aria-expanded="false" data-label-open={t.nav.menu} data-label-close={t.nav.close}>
       <i class="fas fa-bars" aria-hidden="true"></i>
-      <span class="menu-toggle-label">Menu</span>
+      <span class="menu-toggle-label">{t.nav.menu}</span>
     </button>
   </nav>
 </header>
@@ -122,7 +146,33 @@ import { navLinks, contact } from '../data/content';
     text-decoration: underline;
   }
 
+  /* Language switch: a small pill on desktop, a full row in the phone menu */
+  .nav-lang {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 40px;
+    padding: 0 0.9rem;
+    border: 1px solid var(--border);
+    border-radius: 980px;
+    color: var(--text);
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .nav-lang:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .nav-lang i {
+    font-size: 0.9em;
+  }
+
   .nav-phone-mobile,
+  .nav-lang-mobile,
   .menu-toggle {
     display: none;
   }
@@ -173,8 +223,9 @@ import { navLinks, contact } from '../data/content';
   }
 
   /* Below this width the links no longer fit comfortably, so they move into the "Menu" button */
-  @media (max-width: 980px) {
-    .nav-phone {
+  @media (max-width: 1060px) {
+    .nav-phone,
+    .nav-lang {
       display: none;
     }
 
@@ -219,6 +270,24 @@ import { navLinks, contact } from '../data/content';
     .nav-phone-mobile a {
       font-size: 1.25rem;
     }
+
+    .nav-lang-mobile {
+      display: block;
+      margin-top: 0.75rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .nav-lang-mobile a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      min-height: 44px;
+      color: var(--text);
+      font-size: 1.25rem;
+      font-weight: 600;
+      text-decoration: none;
+    }
   }
 </style>
 
@@ -233,7 +302,7 @@ import { navLinks, contact } from '../data/content';
     toggle.setAttribute('aria-expanded', String(open));
     icon.classList.toggle('fa-bars', !open);
     icon.classList.toggle('fa-xmark', open);
-    label.textContent = open ? 'Fechar' : 'Menu';
+    label.textContent = (open ? toggle.dataset.labelClose : toggle.dataset.labelOpen) ?? '';
   }
 
   toggle.addEventListener('click', () => setOpen(!menu.classList.contains('open')));

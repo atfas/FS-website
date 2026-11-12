@@ -1,99 +1,109 @@
 ---
 import { PUBLIC_WEB3FORMS_KEY } from 'astro:env/client';
-import { contact, services } from '../data/content';
+import { contact, firm } from '../data/content';
+import { getLang, useTranslations, routes } from '../i18n';
 
+const lang = getLang(Astro.url);
+const t = useTranslations(lang);
+const f = t.form;
 const isConfigured = Boolean(PUBLIC_WEB3FORMS_KEY);
 const showForm = isConfigured || import.meta.env.DEV;
 ---
 
 {
   showForm ? (
-        <div class="form-card card">
-          <h3 class="form-title">Enviar mensagem</h3>
-          <p class="form-intro">Escreva-nos e respondemos com a maior brevidade possível.</p>
-          {!isConfigured && (
-            <p class="dev-warning" role="note">
-              Modo de desenvolvimento: falta <code>PUBLIC_WEB3FORMS_KEY</code> no ficheiro <code>.env</code>, por isso as
-              mensagens não são enviadas. Este aviso não aparece no site publicado.
-            </p>
-          )}
+    <div class="form-card card">
+      <h3 class="form-title">{f.title}</h3>
+      <p class="form-intro">{f.intro}</p>
+      {!isConfigured && (
+        <p class="dev-warning" role="note">
+          Modo de desenvolvimento: falta <code>PUBLIC_WEB3FORMS_KEY</code> no ficheiro <code>.env</code>, por isso as
+          mensagens não são enviadas. Este aviso não aparece no site publicado.
+        </p>
+      )}
 
-          <form
-            id="contact-form"
-            class="contact-form"
-            action="https://api.web3forms.com/submit"
-            method="POST"
-            novalidate
-            data-configured={String(isConfigured)}
-          >
-            <input type="hidden" name="access_key" value={PUBLIC_WEB3FORMS_KEY ?? ''} />
-            <input type="hidden" name="subject" value="Nova mensagem do site Fernandes & Saraiva" />
-            <input type="hidden" name="from_name" value="Site Fernandes & Saraiva" />
-            {/* Spam trap: people never see or fill this, bots do */}
-            <input type="checkbox" name="botcheck" class="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true" />
+      <form
+        id="contact-form"
+        class="contact-form"
+        action="https://api.web3forms.com/submit"
+        method="POST"
+        novalidate
+        data-configured={String(isConfigured)}
+        data-msg-sending={f.sending}
+        data-msg-submit={f.submit}
+        data-msg-success={f.success}
+        data-msg-failed={f.failed(contact.phone)}
+        data-msg-not-configured={f.notConfigured(contact.email, contact.phone)}
+      >
+        <input type="hidden" name="access_key" value={PUBLIC_WEB3FORMS_KEY ?? ''} />
+        <input type="hidden" name="subject" value={f.subject} />
+        <input type="hidden" name="from_name" value={`Site ${firm.name}`} />
+        {/* Tells the firm which language to reply in */}
+        <input type="hidden" name="language" value={f.language} />
+        {/* Spam trap: people never see or fill this, bots do */}
+        <input type="checkbox" name="botcheck" class="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true" />
 
-            <div class="form-row">
-              <div class="field">
-                <label for="cf-name">Nome</label>
-                <input id="cf-name" name="name" type="text" autocomplete="name" required aria-describedby="cf-name-error" />
-                <p class="field-error" id="cf-name-error" data-message="Escreva o seu nome." />
-              </div>
+        <div class="form-row">
+          <div class="field">
+            <label for="cf-name">{f.name}</label>
+            <input id="cf-name" name="name" type="text" autocomplete="name" required aria-describedby="cf-name-error" />
+            <p class="field-error" id="cf-name-error" data-message={f.errors.name} />
+          </div>
 
-              <div class="field">
-                <label for="cf-email">Email</label>
-                <input id="cf-email" name="email" type="email" autocomplete="email" inputmode="email" required aria-describedby="cf-email-error" />
-                <p class="field-error" id="cf-email-error" data-message="Escreva um email válido, por exemplo nome@gmail.com." />
-              </div>
-            </div>
-
-            <div class="form-row">
-              <div class="field">
-                <label for="cf-phone">Telefone <span class="optional">(opcional)</span></label>
-                <input id="cf-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" />
-              </div>
-
-              <div class="field">
-                <label for="cf-area">Assunto <span class="optional">(opcional)</span></label>
-                <select id="cf-area" name="area">
-                  <option value="">Escolha uma área</option>
-                  {services.map((service) => <option value={service.title}>{service.title}</option>)}
-                  <option value="Outro">Outro assunto</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="field">
-              <label for="cf-message">Mensagem</label>
-              <textarea id="cf-message" name="message" rows="4" required aria-describedby="cf-message-error"></textarea>
-              <p class="field-error" id="cf-message-error" data-message="Escreva a sua mensagem." />
-            </div>
-
-            <div class="field field-consent">
-              <label class="consent">
-                <input id="cf-consent" name="consent" type="checkbox" value="Sim" required aria-describedby="cf-consent-error" />
-                <span>
-                  Aceito que os meus dados sejam usados para responder a esta mensagem, de acordo com a
-                  <a href="/privacidade">política de privacidade</a>.
-                </span>
-              </label>
-              <p class="field-error" id="cf-consent-error" data-message="Para enviar, aceite a política de privacidade." />
-            </div>
-
-            <div class="form-actions">
-              <button type="submit" class="button">Enviar mensagem</button>
-            </div>
-
-            <div class="form-status" role="status" aria-live="polite"></div>
-          </form>
+          <div class="field">
+            <label for="cf-email">{f.email}</label>
+            <input id="cf-email" name="email" type="email" autocomplete="email" inputmode="email" required aria-describedby="cf-email-error" />
+            <p class="field-error" id="cf-email-error" data-message={f.errors.email} />
+          </div>
         </div>
-      ) : (
-        <div class="form-card card fallback">
-          <p>
-            Envie-nos um email para <a href={`mailto:${contact.email}`}>{contact.email}</a> ou ligue para{' '}
-            <a href={contact.phoneHref}>{contact.phone}</a>.
-          </p>
+
+        <div class="form-row">
+          <div class="field">
+            <label for="cf-phone">{f.phone} <span class="optional">{f.optional}</span></label>
+            <input id="cf-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" />
+          </div>
+
+          <div class="field">
+            <label for="cf-area">{f.area} <span class="optional">{f.optional}</span></label>
+            <select id="cf-area" name="area">
+              <option value="">{f.chooseArea}</option>
+              {t.services.items.map((title) => <option value={title}>{title}</option>)}
+              <option value={f.otherArea}>{f.otherArea}</option>
+            </select>
+          </div>
         </div>
-      )
+
+        <div class="field">
+          <label for="cf-message">{f.message}</label>
+          <textarea id="cf-message" name="message" rows="4" required aria-describedby="cf-message-error"></textarea>
+          <p class="field-error" id="cf-message-error" data-message={f.errors.message} />
+        </div>
+
+        <div class="field field-consent">
+          <label class="consent">
+            <input id="cf-consent" name="consent" type="checkbox" value={f.consentValue} required aria-describedby="cf-consent-error" />
+            <span>
+              {f.consentBefore} <a href={routes.privacy[lang]}>{f.consentLink}</a>.
+            </span>
+          </label>
+          <p class="field-error" id="cf-consent-error" data-message={f.errors.consent} />
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="button">{f.submit}</button>
+        </div>
+
+        <div class="form-status" role="status" aria-live="polite"></div>
+      </form>
+    </div>
+  ) : (
+    <div class="form-card card fallback">
+      <p>
+        {f.fallbackBefore} <a href={`mailto:${contact.email}`}>{contact.email}</a> {f.fallbackOr}{' '}
+        <a href={contact.phoneHref}>{contact.phone}</a>.
+      </p>
+    </div>
+  )
 }
 
 <style>
@@ -268,8 +278,7 @@ const showForm = isConfigured || import.meta.env.DEV;
 </style>
 
 <script>
-  import { contact } from '../data/content';
-
+  // Messages come from data-msg-* attributes on the form, so they are in the page's language
   const form = document.querySelector<HTMLFormElement>('#contact-form');
 
   if (form) {
@@ -316,12 +325,12 @@ const showForm = isConfigured || import.meta.env.DEV;
       }
 
       if (form.dataset.configured !== 'true') {
-        setStatus('error', `O formulário ainda não está configurado. Envie um email para ${contact.email} ou ligue ${contact.phone}.`);
+        setStatus('error', form.dataset.msgNotConfigured ?? '');
         return;
       }
 
       submitButton.disabled = true;
-      submitButton.textContent = 'A enviar…';
+      submitButton.textContent = form.dataset.msgSending ?? '';
 
       try {
         const response = await fetch(form.action, {
@@ -333,15 +342,15 @@ const showForm = isConfigured || import.meta.env.DEV;
 
         if (response.ok && result.success) {
           form.reset();
-          setStatus('success', 'Obrigado! A sua mensagem foi enviada. Entraremos em contacto consigo brevemente.');
+          setStatus('success', form.dataset.msgSuccess ?? '');
         } else {
           throw new Error(result.message ?? 'Erro ao enviar');
         }
       } catch {
-        setStatus('error', `Não foi possível enviar a mensagem. Tente novamente ou ligue ${contact.phone}.`);
+        setStatus('error', form.dataset.msgFailed ?? '');
       } finally {
         submitButton.disabled = false;
-        submitButton.textContent = 'Enviar mensagem';
+        submitButton.textContent = form.dataset.msgSubmit ?? '';
       }
     });
   }

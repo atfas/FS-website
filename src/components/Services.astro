@@ -1,12 +1,16 @@
 ---
-import { services, contact } from '../data/content';
+import { contact, serviceIcons } from '../data/content';
+import { getLang, useTranslations } from '../i18n';
+
+const t = useTranslations(getLang(Astro.url));
+const services = t.services.items.map((title, i) => ({ title, icon: serviceIcons[i] }));
 ---
 
 <section id="services" class="section">
   <div class="container">
     <div class="section-header" data-reveal>
-      <h2 class="section-title">Áreas de Atividade</h2>
-      <p class="section-subtitle">Em que podemos ajudar?</p>
+      <h2 class="section-title">{t.services.title}</h2>
+      <p class="section-subtitle">{t.services.subtitle}</p>
     </div>
 
     <ul class="services-grid">
@@ -19,7 +23,7 @@ import { services, contact } from '../data/content';
     </ul>
 
     <p class="services-cta" data-reveal>
-      Não encontra o seu caso? <a href={contact.phoneHref}>Ligue-nos</a> e explicamos-lhe como podemos ajudar.
+      {t.services.ctaBefore} <a href={contact.phoneHref}>{t.services.ctaLink}</a> {t.services.ctaAfter}
     </p>
   </div>
 </section>

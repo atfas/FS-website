@@ -1,22 +1,24 @@
 ---
 import { Image } from 'astro:assets';
 import courthouse from '../assets/images/areas_trabalho.png';
-import { aboutParagraphs, facts } from '../data/content';
+import { getLang, useTranslations } from '../i18n';
+
+const t = useTranslations(getLang(Astro.url));
 ---
 
 <section id="about" class="section section-alt">
   <div class="container">
     <div class="section-header" data-reveal>
-      <h2 class="section-title">Quem Somos</h2>
-      <p class="section-subtitle">Uma sociedade de advogados próxima de quem precisa de ajuda.</p>
+      <h2 class="section-title">{t.about.title}</h2>
+      <p class="section-subtitle">{t.about.subtitle}</p>
     </div>
 
     <div data-reveal>
-      <Image src={courthouse} alt="Palácio da Justiça do Porto" width={1080} class="about-photo" />
+      <Image src={courthouse} alt={t.about.photoAlt} width={1080} class="about-photo" />
     </div>
 
     <ul class="facts">
-      {facts.map((fact, i) => (
+      {t.about.facts.map((fact, i) => (
         <li class="fact" data-reveal style={`--reveal-delay: ${i * 120}ms`}>
           <span class="fact-value">{fact.value}</span>
           <span class="fact-label">{fact.label}</span>
@@ -25,7 +27,7 @@ import { aboutParagraphs, facts } from '../data/content';
     </ul>
 
     <div class="about-text" data-reveal>
-      {aboutParagraphs.map((paragraph) => <p>{paragraph}</p>)}
+      {t.about.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
     </div>
   </div>
 </section>
