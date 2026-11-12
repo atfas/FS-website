@@ -10,15 +10,15 @@ import { navLinks, contact } from '../data/content';
       {navLinks.map((link) => (
         <li><a href={link.href} class="nav-link">{link.label}</a></li>
       ))}
-      <li class="nav-call-mobile">
-        <a href={contact.phoneHref} class="button button-primary">
-          <i class="fas fa-phone" aria-hidden="true"></i> Ligar {contact.phone}
+      <li class="nav-phone-mobile">
+        <a href={contact.phoneHref} aria-label={`Ligar para ${contact.phone}`}>
+          <i class="fas fa-phone" aria-hidden="true"></i> {contact.phone}
         </a>
       </li>
     </ul>
 
-    <a href={contact.phoneHref} class="nav-call button button-primary">
-      <i class="fas fa-phone" aria-hidden="true"></i> Ligar
+    <a href={contact.phoneHref} class="nav-phone" aria-label={`Ligar para ${contact.phone}`}>
+      <i class="fas fa-phone" aria-hidden="true"></i> {contact.phone}
     </a>
 
     <button class="menu-toggle" type="button" aria-controls="nav-menu" aria-expanded="false">
@@ -83,13 +83,29 @@ import { navLinks, contact } from '../data/content';
     color: var(--link);
   }
 
-  .nav-call {
+  .nav-phone,
+  .nav-phone-mobile a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
     min-height: 44px;
-    padding: 0 1.25rem;
-    font-size: 1rem;
+    color: var(--accent);
+    font-size: 1.05rem;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
   }
 
-  .nav-call-mobile,
+  .nav-phone i,
+  .nav-phone-mobile i {
+    font-size: 0.85em;
+  }
+
+  .nav-phone:hover {
+    text-decoration: underline;
+  }
+
+  .nav-phone-mobile,
   .menu-toggle {
     display: none;
   }
@@ -111,7 +127,7 @@ import { navLinks, contact } from '../data/content';
   }
 
   @media (max-width: 860px) {
-    .nav-call {
+    .nav-phone {
       display: none;
     }
 
@@ -144,13 +160,13 @@ import { navLinks, contact } from '../data/content';
       border-bottom: 1px solid var(--border);
     }
 
-    .nav-call-mobile {
+    .nav-phone-mobile {
       display: block;
-      margin-top: 1.25rem;
+      padding-top: 1rem;
     }
 
-    .nav-call-mobile .button {
-      width: 100%;
+    .nav-phone-mobile a {
+      font-size: 1.25rem;
     }
   }
 </style>

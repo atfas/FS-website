@@ -8,8 +8,8 @@ import { partner } from '../data/content';
       <p class="partner-label">Parceiro</p>
       <h2 class="partner-name">{partner.name}</h2>
       <p class="partner-text">{partner.text}</p>
-      <a href={partner.url} target="_blank" rel="noopener" class="button button-secondary">
-        {partner.linkLabel} <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i>
+      <a href={partner.url} target="_blank" rel="noopener" class="link-arrow">
+        {partner.linkLabel}
         <span class="visually-hidden">(abre numa nova janela)</span>
       </a>
     </div>
@@ -25,8 +25,8 @@ import { partner } from '../data/content';
   }
 
   .partner-label {
-    font-weight: 600;
-    color: var(--gold);
+    font-weight: 500;
+    color: var(--text-secondary);
   }
 
   .partner-name {
@@ -38,7 +38,7 @@ import { partner } from '../data/content';
   }
 
   .partner-text {
-    margin: 1.25rem 0 2rem;
+    margin: 1.25rem 0 1rem;
     color: var(--text-secondary);
   }
 

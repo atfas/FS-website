@@ -40,9 +40,7 @@ import { contact } from '../data/content';
         <address class="contact-value">
           {contact.addressLines.map((line, i) => (i === 0 ? line : <Fragment><br />{line}</Fragment>))}
         </address>
-        <a href={contact.mapsUrl} target="_blank" rel="noopener" class="button button-primary">
-          <i class="fas fa-diamond-turn-right" aria-hidden="true"></i> Abrir no Google Maps
-        </a>
+        <a href={contact.mapsUrl} target="_blank" rel="noopener" class="link-arrow">Abrir no Google Maps</a>
       </div>
       <iframe
         class="location-map"
@@ -74,7 +72,7 @@ import { contact } from '../data/content';
   }
 
   a.contact-card:hover {
-    border-color: var(--navy);
+    border-color: var(--accent);
   }
 
   .contact-card .icon-circle {
@@ -124,8 +122,8 @@ import { contact } from '../data/content';
     margin-bottom: 1rem;
   }
 
-  .location-text .button {
-    margin-top: 1.5rem;
+  .location-text .link-arrow {
+    margin-top: 1rem;
   }
 
   .location-map {
@@ -142,10 +140,6 @@ import { contact } from '../data/content';
 
     .location {
       grid-template-columns: 1fr;
-    }
-
-    .location-text .button {
-      width: 100%;
     }
 
     .location-map {

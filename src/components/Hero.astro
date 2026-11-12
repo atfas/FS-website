@@ -11,12 +11,8 @@ import { hero, contact } from '../data/content';
       <h1 class="hero-title">{hero.title}</h1>
       <p class="hero-lead">{hero.lead}</p>
       <div class="hero-actions">
-        <a href={contact.phoneHref} class="button button-primary">
-          <i class="fas fa-phone" aria-hidden="true"></i> Ligar {contact.phone}
-        </a>
-        <a href={`mailto:${contact.email}`} class="button button-secondary">
-          <i class="fas fa-envelope" aria-hidden="true"></i> Enviar email
-        </a>
+        <a href={contact.phoneHref} class="button" aria-label={`Ligar para ${contact.phone}`}>Ligar</a>
+        <a href={`mailto:${contact.email}`} class="link-arrow">Enviar email</a>
       </div>
     </div>
     <div class="hero-image">
@@ -40,8 +36,8 @@ import { hero, contact } from '../data/content';
 
   .hero-eyebrow {
     font-size: 1.15rem;
-    font-weight: 600;
-    color: var(--gold);
+    font-weight: 500;
+    color: var(--text-secondary);
     margin-bottom: 0.75rem;
   }
 
@@ -64,8 +60,13 @@ import { hero, contact } from '../data/content';
   .hero-actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
-    margin-top: 2.5rem;
+    align-items: center;
+    gap: 0.5rem 2rem;
+    margin-top: 2.25rem;
+  }
+
+  .hero-actions .button {
+    min-width: 140px;
   }
 
   .hero-image img {
@@ -91,11 +92,7 @@ import { hero, contact } from '../data/content';
     }
 
     .hero-actions {
-      flex-direction: column;
-    }
-
-    .hero-actions .button {
-      width: 100%;
+      justify-content: center;
     }
 
     .hero-image img {
