@@ -2,46 +2,154 @@
 import { contact } from '../data/content';
 ---
 
-<section id="contact" class="section contact">
+<section id="contact" class="section">
   <div class="container">
-    <h2 class="section-title fade-in">Contactos</h2>
+    <div class="section-header">
+      <h2 class="section-title">Contactos</h2>
+      <p class="section-subtitle">Ligue, envie um email ou visite-nos no escritório.</p>
+    </div>
+
     <div class="contact-grid">
-      <div class="contact-item fade-in">
-        <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
-        <h3 class="contact-title">Morada</h3>
-        <address class="contact-info">
-          {contact.addressLines.map((line, i) => (i === 0 ? line : <Fragment><br />{line}</Fragment>))}
-        </address>
-      </div>
-      <div class="contact-item fade-in">
-        <div class="contact-icon"><i class="fas fa-envelope"></i></div>
-        <h3 class="contact-title">Email</h3>
-        <div class="contact-info">
-          <a href={`mailto:${contact.email}`}>{contact.email}</a>
-        </div>
-      </div>
-      <div class="contact-item fade-in">
-        <div class="contact-icon"><i class="fas fa-phone"></i></div>
-        <h3 class="contact-title">Telefone</h3>
-        <div class="contact-info">{contact.phone}</div>
-      </div>
-      <div class="contact-item fade-in">
-        <div class="contact-icon"><i class="fas fa-clock"></i></div>
-        <h3 class="contact-title">Horário</h3>
-        <div class="contact-info">
+      <a href={contact.phoneHref} class="contact-card card">
+        <span class="icon-circle"><i class="fas fa-phone" aria-hidden="true"></i></span>
+        <span class="contact-label">Telefone</span>
+        <span class="contact-value">{contact.phone}</span>
+        <span class="contact-action">Tocar para ligar</span>
+      </a>
+
+      <a href={`mailto:${contact.email}`} class="contact-card card">
+        <span class="icon-circle"><i class="fas fa-envelope" aria-hidden="true"></i></span>
+        <span class="contact-label">Email</span>
+        <span class="contact-value contact-email">{contact.email}</span>
+        <span class="contact-action">Enviar email</span>
+      </a>
+
+      <div class="contact-card card">
+        <span class="icon-circle"><i class="fas fa-clock" aria-hidden="true"></i></span>
+        <span class="contact-label">Horário</span>
+        <span class="contact-value">
           {contact.hoursLines.map((line, i) => (i === 0 ? line : <Fragment><br />{line}</Fragment>))}
-        </div>
+        </span>
       </div>
     </div>
 
-    <div class="map-container fade-in">
-      <iframe src={contact.mapEmbedUrl} allowfullscreen loading="lazy" title="Localização Fernandes & Saraiva"></iframe>
+    <div class="location card">
+      <div class="location-text">
+        <span class="icon-circle"><i class="fas fa-location-dot" aria-hidden="true"></i></span>
+        <h3 class="contact-label">Morada</h3>
+        <address class="contact-value">
+          {contact.addressLines.map((line, i) => (i === 0 ? line : <Fragment><br />{line}</Fragment>))}
+        </address>
+        <a href={contact.mapsUrl} target="_blank" rel="noopener" class="button button-primary">
+          <i class="fas fa-diamond-turn-right" aria-hidden="true"></i> Abrir no Google Maps
+        </a>
+      </div>
+      <iframe
+        class="location-map"
+        src={contact.mapEmbedUrl}
+        loading="lazy"
+        allowfullscreen
+        title="Mapa com a localização do escritório Fernandes & Saraiva"></iframe>
     </div>
   </div>
 </section>
 
 <style>
-  address {
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .contact-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+    padding: 2rem;
+    color: var(--text);
+    text-decoration: none;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+  }
+
+  a.contact-card:hover {
+    border-color: var(--navy);
+  }
+
+  .contact-card .icon-circle {
+    margin-bottom: 1rem;
+  }
+
+  .contact-label {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+  }
+
+  .contact-value {
+    font-size: 1.35rem;
+    font-weight: 600;
     font-style: normal;
+    line-height: 1.4;
+  }
+
+  .contact-email {
+    font-size: 1.1rem;
+    overflow-wrap: anywhere;
+  }
+
+  .contact-action {
+    margin-top: 0.75rem;
+    color: var(--link);
+    font-weight: 600;
+  }
+
+  .location {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+  }
+
+  .location-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+    padding: 2rem;
+  }
+
+  .location-text .icon-circle {
+    margin-bottom: 1rem;
+  }
+
+  .location-text .button {
+    margin-top: 1.5rem;
+  }
+
+  .location-map {
+    width: 100%;
+    height: 100%;
+    min-height: 360px;
+    border: none;
+  }
+
+  @media (max-width: 900px) {
+    .contact-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .location {
+      grid-template-columns: 1fr;
+    }
+
+    .location-text .button {
+      width: 100%;
+    }
+
+    .location-map {
+      min-height: 300px;
+    }
   }
 </style>

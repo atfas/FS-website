@@ -1,9 +1,66 @@
 ---
+import { navLinks, contact } from '../data/content';
 const year = new Date().getFullYear();
 ---
 
 <footer class="footer">
+  <div class="container footer-inner">
+    <div>
+      <p class="footer-name">Fernandes & Saraiva</p>
+      <p>Sociedade de Advogados R.L.</p>
+      <p>
+        <a href={contact.phoneHref}>{contact.phone}</a> · <a href={`mailto:${contact.email}`}>{contact.email}</a>
+      </p>
+    </div>
+    <ul class="footer-links">
+      {navLinks.map((link) => <li><a href={link.href}>{link.label}</a></li>)}
+    </ul>
+  </div>
   <div class="container">
-    <p class="footer-text">© {year} Fernandes & Saraiva - All Rights Reserved.</p>
+    <p class="footer-copy">© {year} Fernandes & Saraiva. Todos os direitos reservados.</p>
   </div>
 </footer>
+
+<style>
+  .footer {
+    background: var(--bg-alt);
+    border-top: 1px solid var(--border);
+    padding: 3rem 0 2rem;
+    font-size: 1rem;
+    color: var(--text-secondary);
+  }
+
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .footer-name {
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .footer a {
+    color: var(--text-secondary);
+  }
+
+  .footer a:hover {
+    color: var(--link);
+  }
+
+  .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    list-style: none;
+  }
+
+  .footer-copy {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.95rem;
+  }
+</style>

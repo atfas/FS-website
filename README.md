@@ -16,11 +16,12 @@ Sections:
 
 Features:
 
-- **Responsive layout** with a **mobile hamburger menu** that closes when you tap a link or outside it.
-- **Smooth scrolling** between sections from the navbar.
-- **Fade-in animations** on scroll using `IntersectionObserver`.
+- **Clean, Apple-inspired design** made to be easy for older visitors: large text (18–19px body), high contrast, big buttons and plain labels.
+- **One-tap contact**: "Ligar" and "Enviar email" buttons in the hero and navbar, tappable phone and email cards, and an "Abrir no Google Maps" button.
+- **Responsive layout** with a mobile menu labelled "Menu" / "Fechar" that closes on link tap, outside click or Escape.
+- **Accessible**: skip link, visible keyboard focus, and respects the "reduce motion" setting.
 - **Optimised images**: Astro converts and resizes photos to WebP at build time.
-- Styling built on **CSS custom properties** (gold and navy palette), with **Playfair Display** and **Inter** from Google Fonts and icons from **Font Awesome**.
+- Styling built on **CSS custom properties** (gold and navy palette), with the Apple system font (Inter from Google Fonts on other devices) and icons from **Font Awesome**.
 
 ## Project structure
 
@@ -33,7 +34,7 @@ Features:
     ├── pages/
     │   └── index.astro     # Home page: puts the sections together
     ├── layouts/
-    │   └── BaseLayout.astro # <head>, fonts, icons, meta tags, fade-in script
+    │   └── BaseLayout.astro # <head>, fonts, icons, meta tags, skip link
     ├── components/         # Navbar, Hero, About, Services, Team, Partners, Contact, Footer
     ├── data/
     │   └── content.ts      # All page text: practice areas, team bios, contacts

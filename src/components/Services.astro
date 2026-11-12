@@ -1,19 +1,70 @@
 ---
-import { services } from '../data/content';
+import { services, contact } from '../data/content';
 ---
 
-<section id="services" class="section">
+<section id="services" class="section section-alt">
   <div class="container">
-    <h2 class="section-title fade-in">Áreas de Atividade</h2>
-    <div class="services-grid">
-      {services.map((service) => (
-        <div class="service-card fade-in">
-          <div class="service-icon">
-            <i class={`fas ${service.icon}`}></i>
-          </div>
-          <h3 class="service-title">{service.title}</h3>
-        </div>
-      ))}
+    <div class="section-header">
+      <h2 class="section-title">Áreas de Atividade</h2>
+      <p class="section-subtitle">Em que podemos ajudar?</p>
     </div>
+
+    <ul class="services-grid">
+      {services.map((service) => (
+        <li class="service card">
+          <span class="icon-circle"><i class={`fas ${service.icon}`} aria-hidden="true"></i></span>
+          <h3 class="service-title">{service.title}</h3>
+        </li>
+      ))}
+    </ul>
+
+    <p class="services-cta">
+      Não encontra o seu caso? <a href={contact.phoneHref}>Ligue-nos</a> e explicamos-lhe como podemos ajudar.
+    </p>
   </div>
 </section>
+
+<style>
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    list-style: none;
+  }
+
+  .service {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1.5rem;
+  }
+
+  .service-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .services-cta {
+    margin-top: 2.5rem;
+    text-align: center;
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+  }
+
+  .services-cta a {
+    font-weight: 600;
+  }
+
+  @media (max-width: 900px) {
+    .services-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .services-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
